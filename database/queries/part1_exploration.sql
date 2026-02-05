@@ -29,3 +29,11 @@ SELECT
 FROM customers
 GROUP BY country
 ORDER BY nb_clients DESC, country ASC;
+
+-- 8) Nombre de commandes par statut
+SELECT
+  status,
+  COUNT(*) AS nb_orders
+FROM orders
+GROUP BY status
+ORDER BY nb_orders DESC, status ASC;
