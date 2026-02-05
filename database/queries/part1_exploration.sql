@@ -21,3 +21,11 @@ SELECT COUNT(*) AS nb_products FROM products;
 
 -- 6) Combien de gammes de produits ?
 SELECT COUNT(*) AS nb_productlines FROM productlines;
+
+-- 7) Répartition géographique des clients (nombre de clients par pays)
+SELECT
+  country,
+  COUNT(*) AS nb_clients
+FROM customers
+GROUP BY country
+ORDER BY nb_clients DESC, country ASC;
