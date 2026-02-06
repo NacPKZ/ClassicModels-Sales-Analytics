@@ -159,3 +159,29 @@ JOIN productlines pl
 
 GROUP BY pl.productLine
 ORDER BY total_sales DESC;
+
+USE classicmodels;
+
+DROP PROCEDURE IF EXISTS calculate_employee_commission;
+
+DELIMITER $$
+
+CREATE PROCEDURE calculate_employee_commission (
+    IN p_employeeNumber INT,
+    IN p_commission_rate DECIMAL(5,2)
+)
+BEGIN
+    SELECT
+        e.employeeNumber,
+        CONCAT(e.firstName, ' ', e.lastName) AS employee_name,
+        SUM(od.quantityOrdered * od.priceEach) AS total_revenue,
+        ROUND(SUM(od.quantityOrdered * od.priceEach) * p_commission_rate / 100, 2) AS commission_amount
+    FROM employees e
+    JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
+    JOIN orders o ON c.customerNumber = o.customerNumber
+    JOIN orderdetails od ON o.orderNumber = od.orderNumber
+    WHERE e.employeeNumber = p_employeeNumber
+    GROUP BY e.employeeNumber, employee_name;
+END $$
+
+DELIMITER ;
