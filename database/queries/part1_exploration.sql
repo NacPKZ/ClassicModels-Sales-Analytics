@@ -51,3 +51,14 @@ FROM (
   GROUP BY o.orderNumber
 ) AS t;
 
+-- 10) Top 10 produits les plus vendus (en quantité)
+SELECT
+  p.productCode,
+  p.productName,
+  SUM(od.quantityOrdered) AS total_quantity_sold
+FROM products p
+JOIN orderdetails od ON p.productCode = od.productCode
+GROUP BY p.productCode, p.productName
+ORDER BY total_quantity_sold DESC
+LIMIT 10;
+
