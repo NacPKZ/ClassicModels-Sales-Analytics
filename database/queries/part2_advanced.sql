@@ -104,3 +104,29 @@ GROUP BY
     sales_rep
 HAVING total_revenue > 100000
 ORDER BY total_revenue DESC;
+
+-- 5.1) Nouveaux clients par année (sous-requête corrélée)
+SELECT
+    YEAR(o.orderDate) AS year,
+    COUNT(DISTINCT o.customerNumber) AS new_customers
+FROM orders o
+WHERE o.orderDate = (
+    SELECT MIN(o2.orderDate)
+    FROM orders o2
+    WHERE o2.customerNumber = o.customerNumber
+)
+GROUP BY YEAR(o.orderDate)
+ORDER BY year;
+
+-- 5.2) Clients récurrents (rétention) avec sous-requête corrélée
+SELECT
+    YEAR(o.orderDate) AS year,
+    COUNT(DISTINCT o.customerNumber) AS returning_customers
+FROM orders o
+WHERE (
+    SELECT COUNT(*)
+    FROM orders o2
+    WHERE o2.customerNumber = o.customerNumber
+) > 1
+GROUP BY YEAR(o.orderDate)
+ORDER BY year;
