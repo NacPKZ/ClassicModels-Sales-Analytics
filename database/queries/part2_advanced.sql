@@ -79,3 +79,28 @@ SELECT
     level
 FROM employee_hierarchy
 ORDER BY level, employee_name;
+
+-- 4) Segmentation clients VIP avec jointures multiples (5 tables)
+SELECT
+    c.customerNumber,
+    c.customerName,
+    c.country,
+    CONCAT(e.firstName, ' ', e.lastName) AS sales_rep,
+    COUNT(DISTINCT o.orderNumber) AS nb_orders,
+    SUM(od.quantityOrdered * od.priceEach) AS total_revenue
+FROM customers c
+JOIN employees e
+    ON c.salesRepEmployeeNumber = e.employeeNumber
+JOIN orders o
+    ON c.customerNumber = o.customerNumber
+JOIN orderdetails od
+    ON o.orderNumber = od.orderNumber
+JOIN products p
+    ON od.productCode = p.productCode
+GROUP BY
+    c.customerNumber,
+    c.customerName,
+    c.country,
+    sales_rep
+HAVING total_revenue > 100000
+ORDER BY total_revenue DESC;
