@@ -74,3 +74,15 @@ GROUP BY c.customerNumber, c.customerName
 ORDER BY total_revenue DESC
 LIMIT 5;
 
+-- 12) Employé ayant réalisé le plus de ventes
+SELECT
+  e.employeeNumber,
+  CONCAT(e.firstName, ' ', e.lastName) AS employee_name,
+  SUM(od.quantityOrdered * od.priceEach) AS total_revenue
+FROM employees e
+JOIN customers c ON e.employeeNumber = c.salesRepEmployeeNumber
+JOIN orders o ON c.customerNumber = o.customerNumber
+JOIN orderdetails od ON o.orderNumber = od.orderNumber
+GROUP BY e.employeeNumber, employee_name
+ORDER BY total_revenue DESC
+LIMIT 1;
