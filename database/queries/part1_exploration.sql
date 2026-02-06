@@ -86,3 +86,13 @@ JOIN orderdetails od ON o.orderNumber = od.orderNumber
 GROUP BY e.employeeNumber, employee_name
 ORDER BY total_revenue DESC
 LIMIT 1;
+
+-- 13) Gamme de produits la plus rentable
+SELECT
+  pl.productLine,
+  SUM(od.quantityOrdered * od.priceEach) AS total_revenue
+FROM productlines pl
+JOIN products p ON pl.productLine = p.productLine
+JOIN orderdetails od ON p.productCode = od.productCode
+GROUP BY pl.productLine
+ORDER BY total_revenue DESC;
