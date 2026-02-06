@@ -130,3 +130,32 @@ WHERE (
 ) > 1
 GROUP BY YEAR(o.orderDate)
 ORDER BY year;
+
+-- 6) PIVOT : ventes par gamme de produits et par trimestre
+SELECT
+    pl.productLine,
+
+    SUM(CASE WHEN QUARTER(o.orderDate) = 1
+        THEN od.quantityOrdered * od.priceEach ELSE 0 END) AS Q1_sales,
+
+    SUM(CASE WHEN QUARTER(o.orderDate) = 2
+        THEN od.quantityOrdered * od.priceEach ELSE 0 END) AS Q2_sales,
+
+    SUM(CASE WHEN QUARTER(o.orderDate) = 3
+        THEN od.quantityOrdered * od.priceEach ELSE 0 END) AS Q3_sales,
+
+    SUM(CASE WHEN QUARTER(o.orderDate) = 4
+        THEN od.quantityOrdered * od.priceEach ELSE 0 END) AS Q4_sales,
+
+    SUM(od.quantityOrdered * od.priceEach) AS total_sales
+
+FROM orders o
+JOIN orderdetails od
+    ON o.orderNumber = od.orderNumber
+JOIN products p
+    ON od.productCode = p.productCode
+JOIN productlines pl
+    ON p.productLine = pl.productLine
+
+GROUP BY pl.productLine
+ORDER BY total_sales DESC;
