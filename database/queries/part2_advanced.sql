@@ -47,3 +47,35 @@ SELECT
     ) AS moving_average_3_periods
 FROM quarterly_sales
 ORDER BY year, quarter;
+
+-- 3) Hiérarchie organisationnelle avec CTE récursif
+WITH RECURSIVE employee_hierarchy AS (
+    -- Niveau 0 : employés sans manager (top management)
+    SELECT
+        employeeNumber,
+        CONCAT(firstName, ' ', lastName) AS employee_name,
+        reportsTo,
+        0 AS level
+    FROM employees
+    WHERE reportsTo IS NULL
+
+    UNION ALL
+
+    -- Niveaux suivants : subordonnés
+    SELECT
+        e.employeeNumber,
+        CONCAT(e.firstName, ' ', e.lastName) AS employee_name,
+        e.reportsTo,
+        eh.level + 1 AS level
+    FROM employees e
+    JOIN employee_hierarchy eh
+        ON e.reportsTo = eh.employeeNumber
+)
+
+SELECT
+    employeeNumber,
+    employee_name,
+    reportsTo,
+    level
+FROM employee_hierarchy
+ORDER BY level, employee_name;
