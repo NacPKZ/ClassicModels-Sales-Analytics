@@ -37,3 +37,15 @@ SELECT
 FROM orders
 GROUP BY status
 ORDER BY nb_orders DESC, status ASC;
+
+-- 9) Montant total des ventes et panier moyen par commande
+SELECT
+  SUM(od.quantityOrdered * od.priceEach) AS total_sales,
+  AVG(order_total) AS average_order_value
+FROM
+  (SELECT
+      o.orderNumber,
+      SUM(od.quantityOrdered * od.priceEach) AS order_total
+   FROM orders o
+   JOIN orderdetails od ON o.orderNumber = od.orderNumber
+   GROUP BY o.orderNumber) AS sub;
