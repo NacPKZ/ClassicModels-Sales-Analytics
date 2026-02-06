@@ -62,3 +62,15 @@ GROUP BY p.productCode, p.productName
 ORDER BY total_quantity_sold DESC
 LIMIT 10;
 
+-- 11) Top 5 meilleurs clients par chiffre d'affaires
+SELECT
+  c.customerNumber,
+  c.customerName,
+  SUM(od.quantityOrdered * od.priceEach) AS total_revenue
+FROM customers c
+JOIN orders o ON c.customerNumber = o.customerNumber
+JOIN orderdetails od ON o.orderNumber = od.orderNumber
+GROUP BY c.customerNumber, c.customerName
+ORDER BY total_revenue DESC
+LIMIT 5;
+
