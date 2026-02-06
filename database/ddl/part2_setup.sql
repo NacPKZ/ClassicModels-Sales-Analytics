@@ -180,3 +180,27 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+-- =====================================================
+-- (RAJOUT CAR OUBLIE) 6) FUNCTION : customer_lifetime_value (CLV)
+-- =====================================================
+DROP FUNCTION IF EXISTS customer_lifetime_value;
+DELIMITER $$
+
+CREATE FUNCTION customer_lifetime_value(p_customerNumber INT)
+RETURNS DECIMAL(15,2)
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE clv DECIMAL(15,2);
+
+    SELECT IFNULL(SUM(od.quantityOrdered * od.priceEach), 0)
+    INTO clv
+    FROM orders o
+    JOIN orderdetails od ON o.orderNumber = od.orderNumber
+    WHERE o.customerNumber = p_customerNumber;
+
+    RETURN clv;
+END $$
+
+DELIMITER ;
