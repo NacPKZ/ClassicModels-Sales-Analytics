@@ -5,7 +5,7 @@ USE classicmodels;
 -- Fonctions / Procédures / Triggers
 -- =========================
 
--- 0) Colonne customerStatus (si pas déjà créée)
+-- 0) Colonne customerStatus 
 ALTER TABLE customers
 ADD COLUMN IF NOT EXISTS customerStatus VARCHAR(20) DEFAULT 'Regular';
 
