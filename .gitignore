@@ -13,6 +13,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Secrets
+config/.env
 .env
 
 # OS / IDE
