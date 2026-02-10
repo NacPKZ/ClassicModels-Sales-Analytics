@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-from db import get_connection
+from src.analysis.db import get_connection
 
 OUT_DIR = os.path.join("visualizations", "part2")
 os.makedirs(OUT_DIR, exist_ok=True)

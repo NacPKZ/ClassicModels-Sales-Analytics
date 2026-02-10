@@ -1,7 +1,10 @@
+from src.analysis.viz_style import set_mpl_style
+set_mpl_style()
+
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-from db import get_connection
+from src.analysis.db import get_connection
 
 OUT_DIR = os.path.join("visualizations", "part2")
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -29,7 +32,6 @@ def main():
     df = pd.read_sql(SQL, cnx)
     cnx.close()
 
-    # Graph 1: bar ventes / année
     plt.figure()
     plt.bar(df["year"].astype(str), df["total_sales"])
     plt.title("Partie 2 - Q1 : Ventes totales par année")
@@ -40,7 +42,6 @@ def main():
     plt.savefig(os.path.join(OUT_DIR, "part2_q1_sales_par_annee.png"), dpi=200)
     plt.close()
 
-    # Graph 2: part (%) du total
     plt.figure()
     plt.plot(df["year"], df["percentage_of_total"], marker="o")
     plt.title("Partie 2 - Q1 : % des ventes totales par année")
