@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-from db import get_connection
+from src.analysis.db import get_connection
 
 OUT_DIR = os.path.join("visualizations", "part2")
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -32,7 +32,7 @@ def main():
     top = df.head(15).copy()
     top = top.sort_values("total_revenue", ascending=True)
 
-    plt.figure()
+    plt.figure(figsize=(10, 6))
     plt.barh(top["customerName"], top["total_revenue"])
     plt.title("Partie 2 - Q4 : Top 15 clients VIP (CA > 100k)")
     plt.xlabel("Chiffre d'affaires")
